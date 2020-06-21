@@ -39,7 +39,9 @@
           <Welcome/>
         </v-tab-item>
         <v-tab-item></v-tab-item>
-        <v-tab-item></v-tab-item>
+        <v-tab-item>
+          <Media/>
+        </v-tab-item>
       </v-tabs-items>
     </v-content>
   </v-app>
@@ -47,12 +49,14 @@
 
 <script>
 import Welcome from './components/Welcome'
+import Media from './components/Media'
 
 export default {
   name: 'App',
 
   components: {
     Welcome,
+    Media
   },
   data: () => ({
     tab: 2
