@@ -3,6 +3,17 @@
     <v-row>
       <v-col cols="12" sm="6" offset-sm="3">
         <v-card>
+          <v-dialog
+            v-model="dialog"
+            width="500"
+          >
+            <v-card>
+              <v-img
+                :src="`https://pigjackey.imfast.io/${n}.jpg`"
+                class="grey lighten-2"
+              />
+            </v-card>
+          </v-dialog>
           <v-container fluid>
             <v-row>
               <v-col
@@ -13,7 +24,7 @@
               >
                 <v-card flat tile class="d-flex">
                   <v-img
-                    :src="`https://pigjackey.imfast.io/${n}.jpg`"
+                    :src="`https://pigjackey.imfast.io/square/${n}.jpg`"
                     :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
                     aspect-ratio="1"
                     class="grey lighten-2"
@@ -44,11 +55,14 @@
     name: 'Media',
 
     data: () => ({
-      showImage: false
+      showImage: false,
+      dialog: false,
+      n : null
     }),
     methods: {
       clickImage (val) {
-        console.log(val)
+        this.dialog = true
+        this.n = val
       }
     }
   }

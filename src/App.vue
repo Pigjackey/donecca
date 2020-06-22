@@ -2,11 +2,11 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="red"
       dark
     >
       <div class="d-flex align-center">
-        <h1>
+        <h1 @click="tab = 2">
           Donecca
         </h1>
       </div>
@@ -21,7 +21,7 @@
     <v-content>
       <v-tabs
         v-model="tab"
-        background-color="primary darken-1"
+        background-color="red darken-1"
         dark
         grow
         centered
@@ -34,7 +34,9 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item></v-tab-item>
-        <v-tab-item></v-tab-item>
+        <v-tab-item>
+          <Timeline/>
+        </v-tab-item>
         <v-tab-item>
           <Welcome/>
         </v-tab-item>
@@ -48,6 +50,7 @@
 </template>
 
 <script>
+import Timeline from './components/Timeline'
 import Welcome from './components/Welcome'
 import Media from './components/Media'
 
@@ -55,6 +58,7 @@ export default {
   name: 'App',
 
   components: {
+    Timeline,
     Welcome,
     Media
   },
