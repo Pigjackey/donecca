@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <v-app-bar
       app
       color="red"
@@ -64,6 +64,6 @@ export default {
   },
   data: () => ({
     tab: 2
-  }),
+  })
 };
 </script>
