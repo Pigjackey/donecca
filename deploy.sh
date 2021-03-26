@@ -20,10 +20,4 @@ git commit -m 'deploy'
 #git push -f git@github.com:pigjackey/pigjackey.github.io.git master
 git push -f ssh://pigjacke@pigjackey.com/home/pigjacke/donecca.pigjackey.com master
 
-# if you are deploying to https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
-
 cd -
-
-#5lTt?8)ypd92
-#72B$RnPptJF4

@@ -1,23 +1,43 @@
 <template>
   <v-container>
-    <v-timeline v-if="showJournal" :reverse="false" :dense="$vuetify.breakpoint.smAndDown">
-      <v-timeline-item
-          v-for="(item) in items"
-          :key="item"
-      >
-        <template v-slot:opposite>
-          <span
-              :class="`headline font-weight-bold ${item.color}--text`"
-              v-text="new Date(item.creationDate).toDateString()"
-          ></span>
-        </template>
-        <v-card>
-          <v-card-text class="white text--primary">
-            <p class="pt-2">{{ item.text }}</p>
-          </v-card-text>
-        </v-card>
-      </v-timeline-item>
-    </v-timeline>
+    <div v-if="showJournal">
+      <v-row>
+        <v-col>
+          <v-date-picker
+              v-model="selectedDate"
+              color="red"
+              elevation="10"
+              show-adjacent-months
+              scrollable
+              full-width
+              no-title
+              type="month"
+              min="2020-05-26"
+              max="2021-11-30"
+          />
+        </v-col>
+        <v-col>
+          <v-date-picker
+              v-model="selectedDate"
+              color="red"
+              elevation="10"
+              full-width
+              no-title
+              min="2020-05-26"
+              max="2021-11-30"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card>
+            <v-card-text class="white text--primary">
+              <p class="pt-2">{{ currentEntryText() }}</p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
     <v-alert
         v-else
         prominent
@@ -34,11 +54,13 @@
 
 <script>
 import json from '@/assets/Journal.json'
+
 export default {
   name: 'Timeline',
 
   data: () => ({
-    items: json.entries
+    items: json.entries,
+    selectedDate: ''
   }),
 
   methods: {
@@ -50,6 +72,19 @@ export default {
       for (let i = 0; i < this.items.length; i++) {
         this.items[i].text = this.items[i].text.replaceAll('\\','')
       }
+    },
+
+    currentEntryText () {
+      let foundEntry = undefined
+      this.items.forEach(item => {
+        if (new Date(item.creationDate)
+            .toLocaleDateString('zh-Hans-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
+            .replaceAll('/','-')
+            === this.selectedDate) {
+          foundEntry = item
+        }
+      })
+      return foundEntry ? foundEntry.text : ''
     }
   },
 
