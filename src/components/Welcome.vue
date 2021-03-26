@@ -8,9 +8,12 @@
     </v-row>
     <v-row class="text-center">
       <v-col>
-        <v-btn v-if="!showImage" @click="showImage = true" color="primary">Hello there</v-btn>
+        <v-btn v-if="!showImage" @click="showImage = true" color="primary">Hello there p</v-btn>
         <v-btn v-if="showImage" @click="showImage = false" color="primary">General Kenobi</v-btn>
       </v-col>
+    </v-row>
+    <v-row>
+      <v-btn href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Give Collin a new sphincter</v-btn>
     </v-row>
   </v-container>
 </template>

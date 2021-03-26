@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <v-app-bar
       app
       color="red"
@@ -18,7 +18,7 @@
       </h3>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-tabs
         v-model="tab"
         background-color="red darken-1"
@@ -33,7 +33,9 @@
         <v-tab>Media</v-tab>
       </v-tabs>
       <v-tabs-items v-model="tab">
-        <v-tab-item></v-tab-item>
+        <v-tab-item>
+          <Backstory/>
+        </v-tab-item>
         <v-tab-item>
           <Timeline/>
         </v-tab-item>
@@ -45,25 +47,27 @@
           <Media/>
         </v-tab-item>
       </v-tabs-items>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import Timeline from './components/Timeline'
-import Welcome from './components/Welcome'
-import Media from './components/Media'
+import Backstory from '@/components/Backstory'
+import Timeline from '@/components/Timeline'
+import Welcome from '@/components/Welcome'
+import Media from '@/components/Media'
 
 export default {
   name: 'App',
 
   components: {
+    Backstory,
     Timeline,
     Welcome,
     Media
   },
   data: () => ({
     tab: 2
-  }),
+  })
 };
 </script>

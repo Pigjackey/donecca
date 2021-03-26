@@ -7,26 +7,30 @@
         :color="item.color"
         :icon="item.icon"
         fill-dot
-      >
-        <template v-slot:opposite>
+       >
+        <template v-slot:icon>
+          <v-icon @click="item.showOther = !item.showOther" dark>{{ item.icon }}</v-icon>
+        </template>
+        <template v-if="item.showOther" v-slot:opposite>
           <span
             :class="`headline font-weight-bold ${item.color}--text`"
             v-text="item.date"
           ></span>
         </template>
         <v-card
+          v-if="item.showOther"
           :color="item.color"
           dark
         >
-          <v-card-title class="title">Lorem Ipsum Dolor</v-card-title>
+          <v-card-title class="title">{{ item.title }}</v-card-title>
           <v-card-text class="white text--primary">
-            <p>Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.</p>
+            <p class="pt-2">{{ item.text }}</p>
             <v-btn
               :color="item.color"
               class="mx-0"
               outlined
             >
-              Button
+              Picture
             </v-btn>
           </v-card-text>
         </v-card>
@@ -43,23 +47,35 @@
       items: [
         {
           color: 'red',
-          icon: 'mdi-star',
-          date: '1 June 2020'
+          icon: 'mdi-face',
+          title: 'First Meeting',
+          text: 'The day Becca and Donovon first met! It was a cold day and Donovon was looking forward to meeting some new girls at the ice skating rink. Little did he know that when he knocked on Becca\'s door, that nothing would ever be the same',
+          date: '4 October 2019',
+          showOther: false
         },
         {
           color: 'purple',
           icon: 'mdi-book-variant',
-          date: '1 June 2020'
+          title: 'First Meeting',
+          text: 'This was the day Becca and I first met each other',
+          date: '1 June 2020',
+          showOther: false
         },
         {
           color: 'green',
           icon: 'mdi-airballoon',
-          date: '1 June 2020'
+          title: 'First Meeting',
+          text: 'This was the day Becca and I first met each other',
+          date: '1 June 2020',
+          showOther: false
         },
         {
           color: 'indigo',
           icon: 'mdi-buffer',
-          date: '1 June 2020'
+          title: 'First Meeting',
+          text: 'This was the day Becca and I first met each other',
+          date: '1 June 2020',
+          showOther: false
         },
       ]
     })
