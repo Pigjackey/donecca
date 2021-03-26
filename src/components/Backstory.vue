@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-timeline :reverse="false" :dense="$vuetify.breakpoint.smAndDown">
+    <v-timeline v-if="showJournal" :reverse="false" :dense="$vuetify.breakpoint.smAndDown">
       <v-timeline-item
           v-for="(item) in items"
           :key="item"
@@ -18,6 +18,17 @@
         </v-card>
       </v-timeline-item>
     </v-timeline>
+    <v-alert
+        v-else
+        prominent
+        type="info"
+    >
+      <v-row align="center">
+        <v-col class="grow">
+          You aren't logged in! Please enter the master password on the home screen to gain access to this content.
+        </v-col>
+      </v-row>
+    </v-alert>
   </v-container>
 </template>
 
@@ -31,8 +42,8 @@ export default {
   }),
 
   methods: {
-    print (item) {
-      console.log(item)
+    print () {
+      console.log(this.showJournal)
     },
 
     fixText () {
@@ -40,6 +51,10 @@ export default {
         this.items[i].text = this.items[i].text.replaceAll('\\','')
       }
     }
+  },
+
+  props: {
+    showJournal: Boolean
   },
 
   mounted () {

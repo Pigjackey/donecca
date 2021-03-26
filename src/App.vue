@@ -34,13 +34,13 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <Backstory/>
+          <Backstory :show-journal="authorized"/>
         </v-tab-item>
         <v-tab-item>
           <Timeline/>
         </v-tab-item>
         <v-tab-item>
-          <Welcome/>
+          <Welcome @validPassword="authorized = true" />
         </v-tab-item>
         <v-tab-item></v-tab-item>
         <v-tab-item>
@@ -67,7 +67,8 @@ export default {
     Media
   },
   data: () => ({
-    tab: 2
+    tab: 2,
+    authorized: false
   })
 };
 </script>
