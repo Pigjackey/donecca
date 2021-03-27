@@ -26,7 +26,7 @@
         grow
         centered
       >
-        <v-tab>Back Story</v-tab>
+        <v-tab>Becca Journal</v-tab>
         <v-tab>Timeline</v-tab>
         <v-tab>Home</v-tab>
         <v-tab>Looking Forward</v-tab>
@@ -34,7 +34,7 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <Backstory :show-journal="authorized"/>
+          <Journal :show-journal="authorized"/>
         </v-tab-item>
         <v-tab-item>
           <Timeline/>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import Backstory from '@/components/Backstory'
+import Journal from '@/components/Journal'
 import Timeline from '@/components/Timeline'
 import Welcome from '@/components/Welcome'
 import Media from '@/components/Media'
@@ -61,7 +61,7 @@ export default {
   name: 'App',
 
   components: {
-    Backstory,
+    Journal,
     Timeline,
     Welcome,
     Media
