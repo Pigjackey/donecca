@@ -43,6 +43,7 @@
                 </v-card-title>
                 <v-card-subtitle>
                   <v-card :elevation="0" :href="'https://www.google.com/maps/place/' + currentEntryLocation()" target="_blank">{{ currentEntryLocation() }}</v-card>
+                  <v-card :elevation="0" :href="'http://maps.apple.com/?q=' + encodeURI(currentEntryLocation())" target="_blank">{{ currentEntryLocation() }}</v-card>
                 </v-card-subtitle>
                 <v-card-text class="white text--primary">
                   <h5>{{ currentEntryText() }}</h5>
