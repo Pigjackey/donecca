@@ -35,6 +35,19 @@
         <v-col>
           <v-row>
             <v-col>
+              <v-card v-for="(item, index) in matchingEntries" :key="index">
+                <v-card-title>
+                  {{ item.displayDate }}
+                  <v-spacer />
+                  {{ currentEntryWeather() }}
+                </v-card-title>
+                <v-card-subtitle>
+                  <v-card :elevation="0" :href="'http://maps.apple.com/?q=' + encodeURI(currentEntryLocation())" target="_blank">{{ currentEntryLocation() }}</v-card>
+                </v-card-subtitle>
+                <v-card-text class="white text--primary">
+                  <h5>{{ currentEntryText() }}</h5>
+                </v-card-text>
+              </v-card>
               <v-card>
                 <v-card-title>
                   {{ currentEntryDate() }}
@@ -75,6 +88,7 @@ export default {
 
   data: () => ({
     items: json.entries,
+    matchingEntries: [],
     selectedDate: ''
   }),
 
@@ -83,14 +97,18 @@ export default {
       console.log(this.showJournal)
     },
 
-    fixText () {
+    fixTexts () {
       for (let i = 0; i < this.items.length; i++) {
         this.items[i].text = this.items[i].text.replaceAll('\\','')
       }
     },
 
-    openMaps (address) {
-      window.open('https://www.google.com/maps/place/' + address, '_blank')
+    fixDates () {
+      for (let i = 0; i < this.items.length; i++) {
+        let newDate = new Date(this.items[i].creationDate)
+        newDate.setHours(newDate.getHours() - 1)
+        this.items[i].displayDate = newDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + newDate.toLocaleTimeString()
+      }
     },
 
     currentEntryText () {
@@ -171,12 +189,31 @@ export default {
     }
   },
 
+  watch: {
+    selectedDate: function () {
+      this.matchingEntries = this.items.filter(item => {
+        let iteratedDate = new Date(item.creationDate)
+        iteratedDate.setHours(iteratedDate.getHours() - 1)
+
+        let targetDate = new Date(this.selectedDate + 'T07:00')
+
+        let compareString = iteratedDate.getFullYear() + '-' + iteratedDate.getMonth() + '-' + iteratedDate.getDate()
+        let targetString = targetDate.getFullYear() + '-' + targetDate.getMonth() + '-' + targetDate.getDate()
+
+        return compareString === targetString
+      })
+
+      console.log(this.matchingEntries)
+    }
+  },
+
   props: {
     showJournal: Boolean
   },
 
   mounted () {
-    this.fixText()
+    this.fixTexts()
+    this.fixDates()
   }
 }
 </script>
