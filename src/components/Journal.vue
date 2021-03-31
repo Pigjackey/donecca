@@ -2,7 +2,14 @@
   <v-container>
     <div v-if="showJournal">
       <v-row>
-        <v-col cols="4">
+        <v-btn
+            color="pink"
+            dark
+            @click.stop="drawer = !drawer"
+        >
+          Toggle
+        </v-btn>
+        <v-col v-if="tab === 0" cols="4">
           <v-row>
             <v-col>
               <v-date-picker
@@ -32,6 +39,15 @@
             </v-col>
           </v-row>
         </v-col>
+        <v-col v-else-if="tab === 1" cols="4">
+          <iframe
+              height="450"
+              style="border:0"
+              loading="lazy"
+              allowfullscreen
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDtG5W9QQHfyzjrnKi8Yc5fZ5rYAw2cqo8&q=Space+Needle,Seattle+WA">
+          </iframe>
+        </v-col>
         <v-col>
           <v-row>
             <v-col>
@@ -39,26 +55,13 @@
                 <v-card-title>
                   {{ item.displayDate }}
                   <v-spacer />
-                  {{ currentEntryWeather() }}
+                  {{ item.displayWeather }}
                 </v-card-title>
                 <v-card-subtitle>
-                  <v-card :elevation="0" :href="'http://maps.apple.com/?q=' + encodeURI(currentEntryLocation())" target="_blank">{{ currentEntryLocation() }}</v-card>
+                  <v-card :elevation="0" :href="'http://maps.apple.com/?q=' + encodeURI(item.displayLocation)" target="_blank">{{ item.displayLocation }}</v-card>
                 </v-card-subtitle>
                 <v-card-text class="white text--primary">
-                  <h5>{{ currentEntryText() }}</h5>
-                </v-card-text>
-              </v-card>
-              <v-card>
-                <v-card-title>
-                  {{ currentEntryDate() }}
-                  <v-spacer />
-                  {{ currentEntryWeather() }}
-                </v-card-title>
-                <v-card-subtitle>
-                  <v-card :elevation="0" :href="'http://maps.apple.com/?q=' + encodeURI(currentEntryLocation())" target="_blank">{{ currentEntryLocation() }}</v-card>
-                </v-card-subtitle>
-                <v-card-text class="white text--primary">
-                  <h5>{{ currentEntryText() }}</h5>
+                  <h5>{{ item.text }}</h5>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -77,6 +80,40 @@
         </v-col>
       </v-row>
     </v-alert>
+    <v-navigation-drawer
+        v-model="drawer"
+        absolute
+        temporary
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Search Type</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item link @click="tab = 0">
+          <v-list-item-icon>
+            <v-icon>mdi-calendar</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Calendar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="tab = 1">
+          <v-list-item-icon>
+            <v-icon>mdi-map</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Location</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </v-container>
 </template>
 
@@ -89,7 +126,9 @@ export default {
   data: () => ({
     items: json.entries,
     matchingEntries: [],
-    selectedDate: ''
+    selectedDate: '',
+    drawer: false,
+    tab: 0
   }),
 
   methods: {
@@ -97,96 +136,24 @@ export default {
       console.log(this.showJournal)
     },
 
-    fixTexts () {
+    fixEntries () {
       for (let i = 0; i < this.items.length; i++) {
+        //Text
         this.items[i].text = this.items[i].text.replaceAll('\\','')
-      }
-    },
 
-    fixDates () {
-      for (let i = 0; i < this.items.length; i++) {
+        //Date
         let newDate = new Date(this.items[i].creationDate)
         newDate.setHours(newDate.getHours() - 1)
-        this.items[i].displayDate = newDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + newDate.toLocaleTimeString()
+        this.items[i].displayDate = newDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + '  '
+            + newDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+
+        //Weather
+        this.items[i].displayWeather = Math.round(this.items[i].weather.temperatureCelsius * 9 / 5 + 32) + '˚ ' + this.items[i].weather.conditionsDescription
+
+        //Location
+        this.items[i].displayLocation = this.items[i].location.placeName + ', ' + this.items[i].location.localityName + ', ' + this.items[i].location.administrativeArea
       }
     },
-
-    currentEntryText () {
-      let foundEntry = undefined
-
-      this.items.forEach(item => {
-        let iteratedDate = new Date(item.creationDate)
-        iteratedDate.setHours(iteratedDate.getHours() - 1)
-
-        let targetDate = new Date(this.selectedDate + 'T07:00')
-
-        let compareString = iteratedDate.getFullYear() + '-' + iteratedDate.getMonth() + '-' + iteratedDate.getDate()
-        let targetString = targetDate.getFullYear() + '-' + targetDate.getMonth() + '-' + targetDate.getDate()
-
-        if (compareString === targetString) {
-          foundEntry = item
-        }
-      })
-
-      return foundEntry ? foundEntry.text : ''
-    },
-    currentEntryLocation () {
-      let foundEntry = undefined
-
-      this.items.forEach(item => {
-        let iteratedDate = new Date(item.creationDate)
-        iteratedDate.setHours(iteratedDate.getHours() - 1)
-
-        let targetDate = new Date(this.selectedDate + 'T07:00')
-
-        let compareString = iteratedDate.getFullYear() + '-' + iteratedDate.getMonth() + '-' + iteratedDate.getDate()
-        let targetString = targetDate.getFullYear() + '-' + targetDate.getMonth() + '-' + targetDate.getDate()
-
-        if (compareString === targetString) {
-          foundEntry = item
-        }
-      })
-
-      return foundEntry ? foundEntry.location.placeName + ', ' + foundEntry.location.localityName + ', ' + foundEntry.location.administrativeArea : ''
-    },
-    currentEntryWeather () {
-      let foundEntry = undefined
-
-      this.items.forEach(item => {
-        let iteratedDate = new Date(item.creationDate)
-        iteratedDate.setHours(iteratedDate.getHours() - 1)
-
-        let targetDate = new Date(this.selectedDate + 'T07:00')
-
-        let compareString = iteratedDate.getFullYear() + '-' + iteratedDate.getMonth() + '-' + iteratedDate.getDate()
-        let targetString = targetDate.getFullYear() + '-' + targetDate.getMonth() + '-' + targetDate.getDate()
-
-        if (compareString === targetString) {
-          foundEntry = item
-        }
-      })
-
-      return foundEntry ? Math.round(foundEntry.weather.temperatureCelsius * 9 / 5 + 32) + '˚ ' + foundEntry.weather.conditionsDescription : ''
-    },
-    currentEntryDate () {
-      let foundEntry = undefined
-
-      this.items.forEach(item => {
-        let iteratedDate = new Date(item.creationDate)
-        iteratedDate.setHours(iteratedDate.getHours() - 1)
-
-        let targetDate = new Date(this.selectedDate + 'T07:00')
-
-        let compareString = iteratedDate.getFullYear() + '-' + iteratedDate.getMonth() + '-' + iteratedDate.getDate()
-        let targetString = targetDate.getFullYear() + '-' + targetDate.getMonth() + '-' + targetDate.getDate()
-
-        if (compareString === targetString) {
-          foundEntry = iteratedDate
-        }
-      })
-
-      return foundEntry ? foundEntry.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + foundEntry.toLocaleTimeString() : ''
-    }
   },
 
   watch: {
@@ -212,8 +179,7 @@ export default {
   },
 
   mounted () {
-    this.fixTexts()
-    this.fixDates()
+    this.fixEntries()
   }
 }
 </script>
