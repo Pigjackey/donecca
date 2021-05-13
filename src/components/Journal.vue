@@ -107,7 +107,7 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item link @click="tab = 0">
+        <v-list-item link @click="tab = 0; drawer = false">
           <v-list-item-icon>
             <v-icon>mdi-calendar</v-icon>
           </v-list-item-icon>
@@ -116,7 +116,7 @@
             <v-list-item-title>Calendar</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="tab = 1">
+        <v-list-item link @click="tab = 1; drawer = false">
           <v-list-item-icon>
             <v-icon>mdi-map</v-icon>
           </v-list-item-icon>

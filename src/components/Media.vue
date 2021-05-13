@@ -9,7 +9,7 @@
           >
             <v-card>
               <v-img
-                :src="`https://pigjackey.imfast.io/${n}.jpg`"
+                :src="require(`../assets/Original/${n}.jpg`)"
                 class="grey lighten-2"
               />
             </v-card>
@@ -24,7 +24,7 @@
               >
                 <v-card flat tile class="d-flex">
                   <v-img
-                    :src="`https://pigjackey.imfast.io/square/${n}.jpg`"
+                    :src="require(`../assets/Square/${n}.jpg`)"
                     :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
                     aspect-ratio="1"
                     class="grey lighten-2"
@@ -57,7 +57,7 @@
     data: () => ({
       showImage: false,
       dialog: false,
-      n : null
+      n: 1
     }),
     methods: {
       clickImage (val) {
