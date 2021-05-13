@@ -1,32 +1,10 @@
 <template>
  <v-parallax :src="require('@/assets/temple2.jpg')" height="1900">
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
-   <br/>
+   <v-row height="60vh">
+     <v-col height="60vh">
+
+     </v-col>
+   </v-row>
    <v-row>
      <v-col>
    <v-row>
@@ -66,7 +44,7 @@ export default {
 
 <style scoped>
 h1 {
-  font-size: 7em;
+  font-size: 9vw;
   font-family: fantasy;
   -webkit-text-stroke: 1px black;
   text-shadow:
