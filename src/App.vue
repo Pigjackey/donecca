@@ -42,7 +42,9 @@
         <v-tab-item>
           <Welcome @validPassword="authorized = true" />
         </v-tab-item>
-        <v-tab-item></v-tab-item>
+        <v-tab-item>
+          <Forward/>
+        </v-tab-item>
         <v-tab-item>
           <Media/>
         </v-tab-item>
@@ -55,6 +57,7 @@
 import Journal from '@/components/Journal'
 import Timeline from '@/components/Timeline'
 import Welcome from '@/components/Welcome'
+import Forward from '@/components/Forward'
 import Media from '@/components/Media'
 
 export default {
@@ -64,6 +67,7 @@ export default {
     Journal,
     Timeline,
     Welcome,
+    Forward,
     Media
   },
   data: () => ({
